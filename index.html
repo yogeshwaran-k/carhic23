@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rover Control Home</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <div class="banner">
+      <h1>Rover Control Panel</h1>
+      <!-- Add your logo or icon here -->
+      <img src="rover_logo.png" alt="Rover Logo">
+    </div>
+    <nav>
+      <ul>
+        <!-- Show "Home" link to all users -->
+        <li><a href="index.html">Home</a></li>
+        <!-- Show "About" and "Contact" links to all users -->
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <!-- Show "Logout" link only to logged-in users -->
+        <li><a href="#" onclick="logout()" id="logoutLink" style="display: none;">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Show either the control interface or the login form based on login status -->
+    <div id="mainContent">
+      <div class="controls" id="controlInterface" style="display: none;">
+        <h2>Control the Rover</h2>
+        <div class="movement-controls">
+          <button id="btn-forward">Forward</button>
+          <button id="btn-backward">Backward</button>
+          <button id="btn-left">Left</button>
+          <button id="btn-right">Right</button>
+        </div>
+        <div class="sensor-feedback">
+          <h3>Rover Status</h3>
+          <p id="connection-status">Connection Status: Not Connected</p>
+          <!-- Display other sensor data here -->
+        </div>
+      </div>
+      <div class="login-form" id="loginForm" style="display: none;">
+        <h2>Login</h2>
+        <form onsubmit="return validateLogin()">
+          <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+  </footer>
+
+  <!-- Modal for displaying invalid login credentials message -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>Invalid Credentials</h2>
+      <p>Please check your username and password and try again.</p>
+      <button onclick="closeModal()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to logout and clear the session token.
+    function logout() {
+      sessionStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    // Function to validate login credentials (for demonstration purposes).
+    function validateLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Replace 'your_username' and 'your_password' with your actual login credentials.
+      // You may send the username and password to your server for validation instead of using this client-side method.
+      if (username === "u1" && password === "p1") {
+        sessionStorage.setItem("token", "authenticated");
+        showContent();
+        return false;
+      } else {
+        showModal(); // Display the modal for invalid credentials
+        return false;
+      }
+    }
+
+    // Function to display the modal
+    function showModal() {
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      const modal = document.getElementById("modal");
+      modal.style.display = "none";
+    }
+
+    // Show either the control interface or the login form based on login status.
+    function showContent() {
+      if (isLoggedIn()) {
+        document.getElementById("controlInterface").style.display = "block";
+        document.getElementById("logoutLink").style.display = "inline";
+        document.getElementById("loginForm").style.display = "none";
+      } else {
+        document.getElementById("controlInterface").style.display = "none";
+        document.getElementById("logoutLink").style.display = "none";
+        document.getElementById("loginForm").style.display = "block";
+      }
+    }
+
+    // Check if the user is logged in (has a valid session token).
+    function isLoggedIn() {
+      return sessionStorage.getItem("token") !== null;
+    }
+
+    // Call showContent() when the home page loads to show the appropriate content based on login status.
+    showContent();
+
+    // Your JavaScript code for rover control and sensor feedback goes here
+    // Example:
+    // const forwardBtn = document.getElementById("btn-forward");
+    // forwardBtn.addEventListener("click", () => {
+    //   // Code to send forward command to the rover
+    // });
+
+    // const backwardBtn = document.getElementById("btn-backward");
+    // backwardBtn.addEventListener("click", () => {
+    //   // Code to send backward command to the rover
+    // });
+
+    // ... and so on
+
+  </script>
+</body>
+
+</html>
